@@ -8,9 +8,12 @@ import { Button } from '@/components/ui/button';
 import { ThemeToggle } from './theme-toggle';
 import { Menu, X, LogIn } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { AuthModal } from './auth-modal';
+
 
 export function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const pathname = usePathname();
 
   const isActive = (path: string) => pathname === path;
@@ -65,16 +68,22 @@ export function Navbar() {
             {/* Theme Toggle */}
             <ThemeToggle />
 
-            {/* Login Button */}
+            {/* Login Button - Wired to Modal*/}
             <Button
               variant="ghost"
+              onClick={() => setIsAuthModalOpen(true)}
               size="default"
               className="text-emerald-600 hover:bg-emerald-50 dark:hover:bg-emerald-950/30 px-4 py-2 gap-2 mr-3"
               title="Login"
             >
               <LogIn className="h-6 w-6" />
-
             </Button>
+
+            {/* Render the AuthModal */}
+            <AuthModal 
+              isOpen={isAuthModalOpen} 
+              onClose={() => setIsAuthModalOpen(false)} 
+            />
 
             {/* Mobile menu button */}
             <button

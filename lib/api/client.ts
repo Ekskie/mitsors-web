@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 export function getAuthToken(): string | undefined {
   if (typeof window === 'undefined') return undefined;
