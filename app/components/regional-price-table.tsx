@@ -10,15 +10,28 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Input } from '@/components/ui/input';
-import { useRegionalPrices, type RegionalPrice } from '@/hooks/use-regional-prices';
+import {
+  useRegionalPrices,
+  type RegionalPrice,
+} from '@/hooks/use-regional-prices';
 import { useUserProfile } from '@/hooks/use-user-profile';
 import { cn } from '@/lib/utils';
 import { philippineRegions } from '@/constants/philippine-locations';
 
-type SortBy = 'region' | 'verifiedAverage' | 'unverifiedAverage' | 'lastUpdated';
+type SortBy =
+  | 'region'
+  | 'verifiedAverage'
+  | 'unverifiedAverage'
+  | 'lastUpdated';
 
 function PriceTableSkeleton() {
   return (
@@ -51,7 +64,7 @@ function SortHeader({
       onClick={() => onSort(sortKey)}
       className={cn(
         'flex items-center gap-1 font-semibold hover:text-primary transition-colors',
-        isActive ? 'text-primary' : 'text-muted-foreground'
+        isActive ? 'text-primary' : 'text-muted-foreground',
       )}
     >
       {label}
@@ -64,7 +77,7 @@ export function RegionalPriceTable() {
   const [sortBy, setSortBy] = useState<SortBy>('region');
   const [order, setOrder] = useState<'asc' | 'desc'>('asc');
   const [searchQuery, setSearchQuery] = useState('');
-  
+
   const { data: profile, isLoading: isLoadingProfile } = useUserProfile();
   const { data, isLoading } = useRegionalPrices(sortBy, order);
 
@@ -85,9 +98,10 @@ export function RegionalPriceTable() {
   const isHighlighted = (region: string) => region === userRegion;
 
   // Filter regions based on search query
-  const filteredRegions = data?.regions.filter((region: RegionalPrice) =>
-    region.region.toLowerCase().includes(searchQuery.toLowerCase())
-  ) || [];
+  const filteredRegions =
+    data?.regions.filter((region: RegionalPrice) =>
+      region.region.toLowerCase().includes(searchQuery.toLowerCase()),
+    ) || [];
 
   if (isLoading || isLoadingProfile) {
     return (
@@ -116,7 +130,9 @@ export function RegionalPriceTable() {
         </CardHeader>
         <CardContent>
           <div className="flex min-h-[200px] flex-col items-center justify-center rounded-lg border border-dashed p-6">
-            <p className="text-sm text-muted-foreground">No price data available yet</p>
+            <p className="text-sm text-muted-foreground">
+              No price data available yet
+            </p>
           </div>
         </CardContent>
       </Card>
@@ -203,7 +219,7 @@ export function RegionalPriceTable() {
                     'transition-colors',
                     isHighlighted(region.region)
                       ? 'bg-emerald-50 dark:bg-emerald-950 hover:bg-emerald-100 dark:hover:bg-emerald-900'
-                      : 'hover:bg-muted/50'
+                      : 'hover:bg-muted/50',
                   )}
                 >
                   <TableCell className="font-medium">
@@ -256,7 +272,7 @@ export function RegionalPriceTable() {
           </div>
         )}
         <div className="mt-4 text-xs text-muted-foreground">
-          {filteredRegions.length > 0 
+          {filteredRegions.length > 0
             ? `${data.regionsWithData} of ${TOTAL_REGIONS} regions with data`
             : `0 of ${TOTAL_REGIONS} regions with data`}
         </div>

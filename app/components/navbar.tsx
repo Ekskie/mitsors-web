@@ -10,7 +10,6 @@ import { Menu, X, LogIn } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { AuthModal } from './auth-modal';
 
-
 export function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
@@ -81,9 +80,9 @@ export function Navbar() {
             </Button>
 
             {/* Render the AuthModal */}
-            <AuthModal 
-              isOpen={isAuthModalOpen} 
-              onClose={() => setIsAuthModalOpen(false)} 
+            <AuthModal
+              isOpen={isAuthModalOpen}
+              onClose={() => setIsAuthModalOpen(false)}
             />
 
             {/* Mobile menu button */}

@@ -1,6 +1,5 @@
 'use client';
 
-
 import { CheckCircle, Users } from 'lucide-react';
 import {
   Card,
@@ -14,10 +13,13 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { useUserProfile } from '@/hooks/use-user-profile';
 import { usePricesAggregated } from '@/hooks/use-prices-aggregated';
 
-
-function PriceCardSkeleton({ variant }: { variant: 'verified' | 'unverified' }) {
+function PriceCardSkeleton({
+  variant,
+}: {
+  variant: 'verified' | 'unverified';
+}) {
   const isVerified = variant === 'verified';
-  
+
   return (
     <Card
       className={`transition-all duration-200 hover:shadow-lg hover:scale-105 ${
@@ -35,9 +37,7 @@ function PriceCardSkeleton({ variant }: { variant: 'verified' | 'unverified' }) 
           )}
           <CardTitle
             className={`text-lg ${
-              isVerified
-                ? 'text-foreground'
-                : 'text-foreground'
+              isVerified ? 'text-foreground' : 'text-foreground'
             }`}
           >
             {isVerified ? 'Verified Trader Average' : 'Unverified User Average'}
@@ -62,7 +62,11 @@ function PriceCard({
   city,
 }: {
   variant: 'verified' | 'unverified';
-  priceData: { pricePerKg: number; sampleSize: number; lastUpdated: string } | null;
+  priceData: {
+    pricePerKg: number;
+    sampleSize: number;
+    lastUpdated: string;
+  } | null;
   region: string;
   city: string;
 }) {
@@ -103,10 +107,12 @@ function PriceCard({
               <span className="ml-2 text-xl font-normal">/ kg</span>
             </div>
             <div className="text-sm font-medium text-muted-foreground">
-              Based on {priceData.sampleSize} price{priceData.sampleSize !== 1 ? 's' : ''}
+              Based on {priceData.sampleSize} price
+              {priceData.sampleSize !== 1 ? 's' : ''}
             </div>
             <div className="mt-1 text-xs text-muted-foreground/80">
-              Updated {new Date(priceData.lastUpdated).toLocaleDateString('en-US', {
+              Updated{' '}
+              {new Date(priceData.lastUpdated).toLocaleDateString('en-US', {
                 month: 'short',
                 day: 'numeric',
                 year: 'numeric',
@@ -124,7 +130,7 @@ export function DashboardContent() {
 
   const { data, isLoading: isLoadingPrices } = usePricesAggregated(
     profile?.region,
-    profile?.city
+    profile?.city,
   );
 
   const isLoading =

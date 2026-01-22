@@ -24,16 +24,18 @@ export function AuthForm({ setGlobalLoading, onClose }: AuthFormProps) {
 
   /**
    * Task B-3: Atomic Hydration Service
-   * Retrieves user context from localStorage and combines it with 
+   * Retrieves user context from localStorage and combines it with
    * credentials/tokens for a single backend operation.
    */
-    const handleFormSubmit = async (e: React.FormEvent) => {
+  const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
     setIsLoading(true);
     setGlobalLoading?.(true);
 
-    const localData = JSON.parse(localStorage.getItem('mitsors-wizard-data') || '{}');
+    const localData = JSON.parse(
+      localStorage.getItem('mitsors-wizard-data') || '{}',
+    );
 
     try {
       if (isSignUp) {
@@ -42,7 +44,7 @@ export function AuthForm({ setGlobalLoading, onClose }: AuthFormProps) {
           email,
           password,
           name: `${localData.firstName} ${localData.lastName}`.trim() || 'User',
-          callbackURL: '/dashboard',
+          callbackURL: 'http://localhost:5000/dashboard',
           // Type-cast to 'any' to allow custom Drizzle columns defined in users.ts
           firstName: localData.firstName || '',
           lastName: localData.lastName || '',
@@ -61,7 +63,7 @@ export function AuthForm({ setGlobalLoading, onClose }: AuthFormProps) {
         const { error: authError } = await authClient.signIn.email({
           email,
           password,
-          callbackURL: '/dashboard',
+          callbackURL: 'http://localhost:5000/dashboard',
         });
 
         if (authError) throw authError;
@@ -69,7 +71,7 @@ export function AuthForm({ setGlobalLoading, onClose }: AuthFormProps) {
         router.push('/dashboard');
       }
     } catch (err: any) {
-      setError(err.message || "Authentication failed.");
+      setError(err.message || 'Authentication failed.');
     } finally {
       setIsLoading(false);
       setGlobalLoading?.(false);
@@ -84,12 +86,14 @@ export function AuthForm({ setGlobalLoading, onClose }: AuthFormProps) {
     setIsLoading(true);
     setGlobalLoading?.(true);
 
-    const localData = JSON.parse(localStorage.getItem('mitsors-wizard-data') || '{}');
+    const localData = JSON.parse(
+      localStorage.getItem('mitsors-wizard-data') || '{}',
+    );
 
     try {
       await authClient.signIn.social({
         provider,
-        callbackURL: '/dashboard',
+        callbackURL: 'http://localhost:5000/dashboard',
         // B-3: Composite payload sent to POST /api/v1/auth/signin/{provider}
         additionalData: {
           firstName: localData.firstName || '',
@@ -97,7 +101,7 @@ export function AuthForm({ setGlobalLoading, onClose }: AuthFormProps) {
           region: localData.region || '',
           city: localData.city || '',
           userRoles: localData.userRoles || [],
-        }
+        },
       });
     } catch (err: any) {
       setError(`Failed to connect to ${provider}`);
@@ -118,66 +122,88 @@ export function AuthForm({ setGlobalLoading, onClose }: AuthFormProps) {
       <form onSubmit={handleFormSubmit}>
         <div className="grid gap-4">
           <div className="grid gap-2 text-left">
-            <Label htmlFor="email" className="text-gray-400 text-[11px]">Email address</Label>
-            <Input 
-              id="email" 
-              type="email" 
+            <Label htmlFor="email" className="text-gray-400 text-[11px]">
+              Email address
+            </Label>
+            <Input
+              id="email"
+              type="email"
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder="name@example.com" 
-              disabled={isLoading} 
-              className="bg-[#1A1D23] border-gray-800 text-white text-sm" 
+              placeholder="name@example.com"
+              disabled={isLoading}
+              className="bg-[#1A1D23] border-gray-800 text-white text-sm"
             />
           </div>
           <div className="grid gap-2 text-left">
-            <Label htmlFor="password" title="Min. 8 characters" className="text-gray-400 text-[11px]">Password</Label>
-            <Input 
-              id="password" 
-              type="password" 
+            <Label
+              htmlFor="password"
+              title="Min. 8 characters"
+              className="text-gray-400 text-[11px]"
+            >
+              Password
+            </Label>
+            <Input
+              id="password"
+              type="password"
               required
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              disabled={isLoading} 
-              className="bg-[#1A1D23] border-gray-800 text-white text-sm" 
+              disabled={isLoading}
+              className="bg-[#1A1D23] border-gray-800 text-white text-sm"
             />
           </div>
-          <Button type="submit" disabled={isLoading} className="bg-emerald-600 hover:bg-emerald-700 w-full mt-2 text-white font-bold h-11">
-            {isLoading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Mail className="mr-2 h-4 w-4" />}
-            {isSignUp ? "Create Account" : "Sign In"}
+          <Button
+            type="submit"
+            disabled={isLoading}
+            className="bg-emerald-600 hover:bg-emerald-700 w-full mt-2 text-white font-bold h-11"
+          >
+            {isLoading ? (
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+            ) : (
+              <Mail className="mr-2 h-4 w-4" />
+            )}
+            {isSignUp ? 'Create Account' : 'Sign In'}
           </Button>
         </div>
       </form>
 
       <div className="text-center">
-        <button 
+        <button
           type="button"
           onClick={() => setIsSignUp(!isSignUp)}
           className="text-[11px] text-emerald-500 hover:text-emerald-400 transition-colors"
         >
-          {isSignUp ? "Already have an account? Sign In" : "New here? Create an account"}
+          {isSignUp
+            ? 'Already have an account? Sign In'
+            : 'New here? Create an account'}
         </button>
       </div>
 
       <div className="relative">
-        <div className="absolute inset-0 flex items-center"><span className="w-full border-t border-gray-800" /></div>
+        <div className="absolute inset-0 flex items-center">
+          <span className="w-full border-t border-gray-800" />
+        </div>
         <div className="relative flex justify-center text-[10px] uppercase">
-          <span className="bg-[#0B0E14] px-2 text-gray-500 tracking-tighter">Social Sync</span>
+          <span className="bg-[#0B0E14] px-2 text-gray-500 tracking-tighter">
+            Social Sync
+          </span>
         </div>
       </div>
 
       <div className="grid grid-cols-2 gap-4">
-        <Button 
-          variant="outline" 
+        <Button
+          variant="outline"
           disabled={isLoading}
           className="border-gray-800 bg-transparent hover:bg-gray-900 text-white text-xs h-10"
           onClick={() => handleSocialAuth('google')}
         >
           <Chrome className="mr-2 h-3 w-3" /> Google
         </Button>
-        <Button 
+        <Button
           disabled={isLoading}
-          style={{ backgroundColor: "#1877F2" }}
+          style={{ backgroundColor: '#1877F2' }}
           className="text-white hover:opacity-90 border-none text-xs h-10"
           onClick={() => handleSocialAuth('facebook')}
         >
