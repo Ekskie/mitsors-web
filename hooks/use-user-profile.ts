@@ -18,7 +18,7 @@ type UserProfileStore = {
   hydrateFromStorage: () => void;
 };
 
-const STORAGE_KEY = 'mitsors_user_profile';
+const STORAGE_KEY = 'mitsors-wizard-data';
 
 const useUserProfileStore = create<UserProfileStore>((set) => ({
   profile: null,

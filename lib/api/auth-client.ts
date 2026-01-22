@@ -1,11 +1,6 @@
-import { createAuthClient } from 'better-auth/react';
+import { createAuthClient } from "better-auth/react";
 
 export const authClient = createAuthClient({
   // Uses the variable we just added to .env.local
-  baseURL: process.env.NEXT_PUBLIC_BETTER_AUTH_URL,
-  path: {
-    signIn: {
-      social: '/signin/:provider',
-    },
-  },
+  baseURL: process.env.NEXT_PUBLIC_BETTER_AUTH_URL 
 });

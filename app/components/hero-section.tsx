@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { WizardModal } from './wizard-modal';
 import { TrendingUp, BarChart3, MapPin, Shield } from 'lucide-react';
-import { SmoothPigAnimation } from './pig-animation';
+import { PigAnimation } from './pig-animation';
 
 export function HeroSection() {
   const [wizardOpen, setWizardOpen] = useState(false);
@@ -142,7 +142,7 @@ export function HeroSection() {
         </div>
 
         <div className="pointer-events-none absolute inset-x-0 -bottom-6 sm:-bottom-4">
-          <SmoothPigAnimation className="h-28 sm:h-32 md:h-36 w-full" />
+          <PigAnimation className="h-28 sm:h-32 md:h-36 w-full" />
         </div>
       </section>
 
