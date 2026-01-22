@@ -16,7 +16,7 @@ export function ThemeToggle() {
       variant="ghost"
       size="icon"
       onClick={toggleTheme}
-      className="h-11 w-11 rounded-lg"
+      className="cursor-pointer h-11 w-11 rounded-lg"
       title={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
     >
       {theme === 'dark' ? (

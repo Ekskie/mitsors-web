@@ -15,7 +15,9 @@ export function useSubmitPrice() {
       });
     },
     onSuccess: () => {
+      // Invalidate all price-related queries to refresh the data
       queryClient.invalidateQueries({ queryKey: ['prices'] });
+      queryClient.invalidateQueries({ queryKey: ['regional-prices'] });
     },
   });
 }

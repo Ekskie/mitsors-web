@@ -8,12 +8,9 @@ import { Button } from '@/components/ui/button';
 import { ThemeToggle } from './theme-toggle';
 import { Menu, X, LogIn } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { AuthModal } from './auth-modal';
-
 
 export function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const pathname = usePathname();
 
   const isActive = (path: string) => pathname === path;
@@ -30,16 +27,16 @@ export function Navbar() {
           {/* Left: Logo + Brand Name + Navigation */}
           <div className="flex items-center gap-6 ml-3">
             {/* Logo & Brand */}
-            <Link 
-              href="/" 
+            <Link
+              href="/"
               className="flex items-center gap-2 font-bold text-lg shrink-0 text-emerald-600 hover:text-emerald-700 transition-colors"
             >
               <Image
-                src="/mitsors_logo.png"
+                src="/mitsors_logo1.png"
                 alt="MITSORS Logo"
                 width={38}
                 height={38}
-                className="h-10 w-10 rounded-lg"
+                className="h-10 w-10 bg-transparent"
               />
               <span className="hidden sm:inline">MITSORS</span>
             </Link>
@@ -54,7 +51,7 @@ export function Navbar() {
                     'text-base font-medium transition-colors whitespace-nowrap',
                     isActive(item.href)
                       ? 'text-emerald-600'
-                      : 'text-muted-foreground hover:text-foreground'
+                      : 'text-muted-foreground hover:text-foreground',
                   )}
                 >
                   {item.label}
@@ -68,22 +65,16 @@ export function Navbar() {
             {/* Theme Toggle */}
             <ThemeToggle />
 
-            {/* Login Button - Wired to Modal*/}
+            {/* Login Button */}
             <Button
               variant="ghost"
-              onClick={() => setIsAuthModalOpen(true)}
               size="default"
-              className="text-emerald-600 hover:bg-emerald-50 dark:hover:bg-emerald-950/30 px-4 py-2 gap-2 mr-3"
+              className="cursor-pointer flex items-center gap-2 text-emerald-600 hover:bg-emerald-50 dark:hover:bg-emerald-950/30 px-4 py-2 mr-3"
               title="Login"
             >
-              <LogIn className="h-6 w-6" />
+              <LogIn className="h-5 w-5" />
+              <span className="font-medium">Login</span>
             </Button>
-
-            {/* Render the AuthModal */}
-            <AuthModal 
-              isOpen={isAuthModalOpen} 
-              onClose={() => setIsAuthModalOpen(false)} 
-            />
 
             {/* Mobile menu button */}
             <button
@@ -113,7 +104,7 @@ export function Navbar() {
                     'block px-3 py-2 rounded-lg text-base font-medium transition-all duration-200',
                     isActive(item.href)
                       ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-950/30 dark:text-emerald-400'
-                      : 'text-foreground hover:bg-muted'
+                      : 'text-foreground hover:bg-muted',
                   )}
                 >
                   {item.label}

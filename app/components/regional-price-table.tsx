@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { ChevronUp, ChevronDown } from 'lucide-react';
+import { ChevronUp, ChevronDown, Search } from 'lucide-react';
 import {
   Table,
   TableBody,
@@ -12,9 +12,11 @@ import {
 } from '@/components/ui/table';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
+import { Input } from '@/components/ui/input';
 import { useRegionalPrices, type RegionalPrice } from '@/hooks/use-regional-prices';
 import { useUserProfile } from '@/hooks/use-user-profile';
 import { cn } from '@/lib/utils';
+import { philippineRegions } from '@/constants/philippine-locations';
 
 type SortBy = 'region' | 'verifiedAverage' | 'unverifiedAverage' | 'lastUpdated';
 
@@ -53,7 +55,7 @@ function SortHeader({
       )}
     >
       {label}
-      {isActive && <Icon className="h-4 w-4" />}
+      <Icon className="h-4 w-4" />
     </button>
   );
 }
@@ -61,9 +63,12 @@ function SortHeader({
 export function RegionalPriceTable() {
   const [sortBy, setSortBy] = useState<SortBy>('region');
   const [order, setOrder] = useState<'asc' | 'desc'>('asc');
+  const [searchQuery, setSearchQuery] = useState('');
   
   const { data: profile, isLoading: isLoadingProfile } = useUserProfile();
   const { data, isLoading } = useRegionalPrices(sortBy, order);
+
+  const TOTAL_REGIONS = philippineRegions.length;
 
   const handleSort = (key: SortBy) => {
     if (sortBy === key) {
@@ -79,13 +84,18 @@ export function RegionalPriceTable() {
   const userRegion = profile?.region;
   const isHighlighted = (region: string) => region === userRegion;
 
+  // Filter regions based on search query
+  const filteredRegions = data?.regions.filter((region: RegionalPrice) =>
+    region.region.toLowerCase().includes(searchQuery.toLowerCase())
+  ) || [];
+
   if (isLoading || isLoadingProfile) {
     return (
       <Card>
         <CardHeader>
           <CardTitle>Regional Price Overview</CardTitle>
           <CardDescription>
-            Liveweight prices across all 17 Philippine regions
+            Liveweight prices across all {TOTAL_REGIONS} Philippine regions
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -116,11 +126,25 @@ export function RegionalPriceTable() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Regional Price Overview</CardTitle>
-        <CardDescription>
-          Liveweight prices across all {data.totalRegions} Philippine regions
-          {userRegion && ` • Your region: ${userRegion}`}
-        </CardDescription>
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+          <div className="space-y-1.5">
+            <CardTitle>Regional Price Overview</CardTitle>
+            <CardDescription>
+              Liveweight prices across all {TOTAL_REGIONS} Philippine regions
+              {userRegion && ` • Your region: ${userRegion}`}
+            </CardDescription>
+          </div>
+          <div className="relative w-full sm:w-64">
+            <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+            <Input
+              type="text"
+              placeholder="Search region..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="pl-9"
+            />
+          </div>
+        </div>
       </CardHeader>
       <CardContent>
         <div className="w-full overflow-x-auto">
@@ -172,7 +196,7 @@ export function RegionalPriceTable() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {data.regions.map((region: RegionalPrice) => (
+              {filteredRegions.map((region: RegionalPrice) => (
                 <TableRow
                   key={region.region}
                   className={cn(
@@ -226,8 +250,15 @@ export function RegionalPriceTable() {
             </TableBody>
           </Table>
         </div>
+        {filteredRegions.length === 0 && searchQuery && (
+          <div className="mt-4 text-center text-sm text-muted-foreground">
+            No regions found matching &quot;{searchQuery}&quot;
+          </div>
+        )}
         <div className="mt-4 text-xs text-muted-foreground">
-          {data.regionsWithData} of {data.totalRegions} regions with data
+          {filteredRegions.length > 0 
+            ? `${data.regionsWithData} of ${TOTAL_REGIONS} regions with data`
+            : `0 of ${TOTAL_REGIONS} regions with data`}
         </div>
       </CardContent>
     </Card>

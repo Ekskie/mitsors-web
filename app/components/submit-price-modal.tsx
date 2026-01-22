@@ -1,20 +1,40 @@
-"use client";
+'use client';
 
 import * as React from 'react';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form';
 import { Combobox } from '@/components/ui/combobox';
 import { useUserProfile } from '@/hooks/use-user-profile';
 import { useSubmitPrice } from '@/hooks/use-submit-price';
 import { useToast } from '@/hooks/use-toast';
-import { getRegionOptions, getCityOptions } from '@/constants/philippine-locations';
-import { getLivestockTypeOptions, getPigBreedOptions } from '@/constants/livestock-data';
+import {
+  getRegionOptions,
+  getCityOptions,
+} from '@/constants/philippine-locations';
+import {
+  getLivestockTypeOptions,
+  getPigBreedOptions,
+} from '@/constants/livestock-data';
 
 const formSchema = z.object({
   region: z.string().min(1, 'Region is required'),
@@ -24,11 +44,7 @@ const formSchema = z.object({
     .min(50, 'Minimum is 50 PHP')
     .max(500, 'Maximum is 500 PHP'),
   livestockType: z.string().min(1, 'Livestock type is required'),
-  breed: z
-    .string()
-    .max(100, 'Max 100 characters')
-    .optional()
-    .or(z.literal('')),
+  breed: z.string().max(100, 'Max 100 characters').optional().or(z.literal('')),
   notes: z
     .string()
     .max(500, 'Max 500 characters')
@@ -37,7 +53,7 @@ const formSchema = z.object({
         if (!val || val.length === 0) return true;
         return val.length >= 10;
       },
-      { message: 'Notes must be at least 10 characters if provided' }
+      { message: 'Notes must be at least 10 characters if provided' },
     )
     .optional()
     .or(z.literal('')),
@@ -53,7 +69,7 @@ const formSchema = z.object({
         today.setHours(0, 0, 0, 0);
         return d <= today;
       },
-      { message: 'Date cannot be in the future' }
+      { message: 'Date cannot be in the future' },
     ),
 });
 
@@ -65,10 +81,16 @@ export function SubmitPriceModal() {
   const { toast } = useToast();
   const submitPrice = useSubmitPrice();
   const [selectedRegion, setSelectedRegion] = React.useState<string>('');
-  
+
   const regionOptions = React.useMemo(() => getRegionOptions(), []);
-  const cityOptions = React.useMemo(() => getCityOptions(selectedRegion), [selectedRegion]);
-  const livestockTypeOptions = React.useMemo(() => getLivestockTypeOptions(), []);
+  const cityOptions = React.useMemo(
+    () => getCityOptions(selectedRegion),
+    [selectedRegion],
+  );
+  const livestockTypeOptions = React.useMemo(
+    () => getLivestockTypeOptions(),
+    [],
+  );
   const breedOptions = React.useMemo(() => getPigBreedOptions(), []);
 
   const defaultValues = React.useMemo<FormValues>(() => {
@@ -123,7 +145,9 @@ export function SubmitPriceModal() {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button size="lg">Submit Price</Button>
+        <Button size="lg" className="transition-all duration-200 hover:shadow-lg hover:scale-105 cursor-pointer">
+          Submit Price
+        </Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
@@ -168,7 +192,11 @@ export function SubmitPriceModal() {
                         value={String(field.value || '')}
                         onValueChange={field.onChange}
                         placeholder="Select or type city/municipality..."
-                        emptyMessage={selectedRegion ? "No city found." : "Please select a region first."}
+                        emptyMessage={
+                          selectedRegion
+                            ? 'No city found.'
+                            : 'Please select a region first.'
+                        }
                         disabled={!selectedRegion}
                       />
                     </FormControl>
@@ -186,12 +214,12 @@ export function SubmitPriceModal() {
                   <FormItem>
                     <FormLabel>Price (PHP/kg)</FormLabel>
                     <FormControl>
-                      <Input 
-                        type="number" 
-                        step="0.01" 
-                        min={50} 
-                        max={500} 
-                        placeholder="e.g. 185.50" 
+                      <Input
+                        type="number"
+                        step="0.01"
+                        min={50}
+                        max={500}
+                        placeholder="e.g. 185.50"
                         {...field}
                         onChange={(e) => {
                           // Allow user to type freely, including erasing
@@ -273,18 +301,22 @@ export function SubmitPriceModal() {
                 <FormItem>
                   <FormLabel>Notes (optional)</FormLabel>
                   <FormControl>
-                    <Textarea 
-                      rows={3} 
-                      placeholder="Additional context (min 10 characters if provided)" 
+                    <Textarea
+                      rows={3}
+                      placeholder="Additional context (min 10 characters if provided)"
                       maxLength={500}
-                      {...field} 
+                      {...field}
                     />
                   </FormControl>
                   <div className="text-xs text-muted-foreground text-right">
                     {String(field.value || '').length}/500 characters
-                    {field.value && String(field.value).length > 0 && String(field.value).length < 10 && (
-                      <span className="text-destructive ml-2">Min 10 characters required</span>
-                    )}
+                    {field.value &&
+                      String(field.value).length > 0 &&
+                      String(field.value).length < 10 && (
+                        <span className="text-destructive ml-2">
+                          Min 10 characters required
+                        </span>
+                      )}
                   </div>
                   <FormMessage />
                 </FormItem>

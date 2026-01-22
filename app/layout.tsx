@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   title: 'Mitsors',
   description: 'Livestock price monitoring platform',
   icons: {
-    icon: '/mitsors_logo.png',
+    icon: '/mitsors_logo1.png',
   },
 };
 
@@ -34,14 +34,10 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body
-        className={`antialiased`}
-      >
+      <body className={`antialiased`}>
         <Providers>
           <Navbar />
-          <main className="pt-16">
-            {children}
-          </main>
+          <main className="pt-16">{children}</main>
         </Providers>
       </body>
     </html>

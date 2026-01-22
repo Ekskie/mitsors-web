@@ -8,7 +8,7 @@ export function Footer() {
           <div className="space-y-2">
             <div className="flex items-center gap-2 text-emerald-700 font-bold text-lg">
               <Image
-                src="/mitsors_logo.png"
+                src="/mitsors_logo1.png"
                 alt="MITSORS Logo"
                 width={38}
                 height={38}
@@ -17,7 +17,8 @@ export function Footer() {
               <span>MITSORS</span>
             </div>
             <p className="text-sm text-muted-foreground max-w-md">
-              Real-time livestock pricing you can trust. Track markets, compare regions, and make confident decisions.
+              Real-time livestock pricing you can trust. Track markets, compare
+              regions, and make confident decisions.
             </p>
           </div>
 
@@ -50,9 +51,13 @@ export function Footer() {
         </div>
 
         <div className="mt-8 flex flex-col gap-4 border-t border-border pt-6 text-sm text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
-          <span>© {new Date().getFullYear()} MITSORS. All rights reserved.</span>
+          <span>
+            © {new Date().getFullYear()} MITSORS. All rights reserved.
+          </span>
           <div className="flex flex-wrap gap-4">
-            <span className="text-foreground font-semibold">Live pricing for every region.</span>
+            <span className="text-foreground font-semibold">
+              Live pricing for every region.
+            </span>
           </div>
         </div>
       </div>

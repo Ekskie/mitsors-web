@@ -20,10 +20,10 @@ function PriceCardSkeleton({ variant }: { variant: 'verified' | 'unverified' }) 
   
   return (
     <Card
-      className={`${
+      className={`transition-all duration-200 hover:shadow-lg hover:scale-105 ${
         isVerified
-          ? 'border-primary/30 bg-primary/5'
-          : 'border-muted-foreground/20 bg-muted/50'
+          ? 'border-primary/30 bg-primary/5 hover:border-primary/60 hover:bg-primary/10'
+          : 'border-muted-foreground/20 bg-muted/50 hover:border-muted-foreground/40 hover:bg-muted/70'
       }`}
     >
       <CardHeader>
@@ -70,10 +70,10 @@ function PriceCard({
 
   return (
     <Card
-      className={`${
+      className={`transition-all duration-200 hover:shadow-lg hover:scale-105 ${
         isVerified
-          ? 'border-primary/30 bg-primary/5'
-          : 'border-muted-foreground/20 bg-muted/50'
+          ? 'border-primary/30 bg-primary/5 hover:border-primary/60 hover:bg-primary/10'
+          : 'border-muted-foreground/20 bg-muted/50 hover:border-muted-foreground/40 hover:bg-muted/70'
       }`}
     >
       <CardHeader>
