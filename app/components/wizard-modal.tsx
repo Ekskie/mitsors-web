@@ -14,8 +14,10 @@ import { Label } from '@/components/ui/label';
 import { ArrowRight, ArrowLeft, Check, AlertCircle } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Combobox } from '@/components/ui/combobox';
-import { getRegionOptions, getCityOptions } from '@/constants/philippine-locations';
-
+import {
+  getRegionOptions,
+  getCityOptions,
+} from '@/constants/philippine-locations';
 
 // TASK A-2 & B-3 IMPORTS
 import { useWizardStore } from '@/app/store/use-wizard-store';
@@ -28,10 +30,10 @@ interface WizardModalProps {
 
 export function WizardModal({ open, onOpenChange }: WizardModalProps) {
   const router = useRouter();
-  
-  
+
   // Connect to Zustand Store
-  const { step, data, setStep, updateData, completeWizard, reset } = useWizardStore();
+  const { step, data, setStep, updateData, completeWizard, reset } =
+    useWizardStore();
 
   const totalSteps = 3;
 
@@ -62,11 +64,11 @@ export function WizardModal({ open, onOpenChange }: WizardModalProps) {
 
   const handleComplete = () => {
     // 1. Task A-4 & B-3: Persist to the single key 'mitsors-wizard-data'
-    completeWizard(); 
-    
+    completeWizard();
+
     // 2. Remove the line below to stop creating 'mitsors_user_profile'
-    // setAnonymousProfile(data); 
-    
+    // setAnonymousProfile(data);
+
     // 3. Navigate to dashboard as per Flow 1 specifications
     router.push('/dashboard');
 
@@ -133,11 +135,15 @@ export function WizardModal({ open, onOpenChange }: WizardModalProps) {
             <div className="space-y-4 animate-in fade-in slide-in-from-right-4 duration-300">
               <div>
                 <h3 className="text-lg font-semibold">Tell us about you</h3>
-                <p className="text-sm text-gray-400">Names must be at least 2 characters.</p>
+                <p className="text-sm text-gray-400">
+                  Names must be at least 2 characters.
+                </p>
               </div>
               <div className="grid gap-4 sm:grid-cols-2">
                 <div className="space-y-2">
-                  <Label htmlFor="firstName" className="text-gray-300">First name</Label>
+                  <Label htmlFor="firstName" className="text-gray-300">
+                    First name
+                  </Label>
                   <Input
                     id="firstName"
                     value={data.firstName}
@@ -147,7 +153,9 @@ export function WizardModal({ open, onOpenChange }: WizardModalProps) {
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="lastName" className="text-gray-300">Last name</Label>
+                  <Label htmlFor="lastName" className="text-gray-300">
+                    Last name
+                  </Label>
                   <Input
                     id="lastName"
                     value={data.lastName}
@@ -164,8 +172,12 @@ export function WizardModal({ open, onOpenChange }: WizardModalProps) {
           {step === 2 && (
             <div className="space-y-4 animate-in fade-in slide-in-from-right-4 duration-300">
               <div>
-                <h3 className="text-lg font-semibold">Where are you located?</h3>
-                <p className="text-sm text-gray-400">We’ll default prices to your area.</p>
+                <h3 className="text-lg font-semibold">
+                  Where are you located?
+                </h3>
+                <p className="text-sm text-gray-400">
+                  We’ll default prices to your area.
+                </p>
               </div>
               <div className="grid gap-4 sm:grid-cols-2">
                 <div className="space-y-2">
@@ -185,7 +197,9 @@ export function WizardModal({ open, onOpenChange }: WizardModalProps) {
                     options={cityOptions}
                     value={data.city}
                     onValueChange={(value) => updateData({ city: value })}
-                    placeholder={data.region ? 'Select city...' : 'Choose region first'}
+                    placeholder={
+                      data.region ? 'Select city...' : 'Choose region first'
+                    }
                     disabled={!data.region}
                   />
                 </div>
@@ -201,7 +215,9 @@ export function WizardModal({ open, onOpenChange }: WizardModalProps) {
               </div>
               <div>
                 <h3 className="text-lg font-semibold">Choose your roles</h3>
-                <p className="text-sm text-gray-400">Select all that apply to your business.</p>
+                <p className="text-sm text-gray-400">
+                  Select all that apply to your business.
+                </p>
               </div>
               <div className="grid gap-3 sm:grid-cols-3">
                 {[
@@ -229,11 +245,15 @@ export function WizardModal({ open, onOpenChange }: WizardModalProps) {
 
               {/* Profile summary preview */}
               <div className="rounded-lg bg-gray-900/50 p-4 text-left text-xs border border-gray-800">
-                <h4 className="mb-2 font-semibold text-emerald-500 uppercase tracking-wider">Draft Profile</h4>
+                <h4 className="mb-2 font-semibold text-emerald-500 uppercase tracking-wider">
+                  Draft Profile
+                </h4>
                 <div className="space-y-1.5">
                   <div className="flex justify-between">
                     <span className="text-gray-500">Name</span>
-                    <span className="text-gray-200">{data.firstName || '—'} {data.lastName || ''}</span>
+                    <span className="text-gray-200">
+                      {data.firstName || '—'} {data.lastName || ''}
+                    </span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-gray-500">Location</span>
@@ -241,7 +261,9 @@ export function WizardModal({ open, onOpenChange }: WizardModalProps) {
                   </div>
                   <div className="flex justify-between">
                     <span className="text-gray-500">Roles</span>
-                    <span className="text-gray-200">{data.userRoles.length ? data.userRoles.join(', ') : '—'}</span>
+                    <span className="text-gray-200">
+                      {data.userRoles.length ? data.userRoles.join(', ') : '—'}
+                    </span>
                   </div>
                 </div>
               </div>
@@ -266,9 +288,13 @@ export function WizardModal({ open, onOpenChange }: WizardModalProps) {
             className="bg-emerald-600 hover:bg-emerald-700 text-white min-w-[120px]"
           >
             {step === totalSteps ? (
-              <>Finish <Check className="ml-2 h-4 w-4" /></>
+              <>
+                Finish <Check className="ml-2 h-4 w-4" />
+              </>
             ) : (
-              <>Next <ArrowRight className="ml-2 h-4 w-4" /></>
+              <>
+                Next <ArrowRight className="ml-2 h-4 w-4" />
+              </>
             )}
           </Button>
         </div>

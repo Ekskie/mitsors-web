@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import { useEffect } from 'react';
 import { create } from 'zustand';
@@ -58,8 +58,12 @@ const useUserProfileStore = create<UserProfileStore>((set) => ({
 export function useUserProfile() {
   const profile = useUserProfileStore((state) => state.profile);
   const isHydrated = useUserProfileStore((state) => state.isHydrated);
-  const hydrateFromStorage = useUserProfileStore((state) => state.hydrateFromStorage);
-  const setAnonymousProfile = useUserProfileStore((state) => state.setAnonymousProfile);
+  const hydrateFromStorage = useUserProfileStore(
+    (state) => state.hydrateFromStorage,
+  );
+  const setAnonymousProfile = useUserProfileStore(
+    (state) => state.setAnonymousProfile,
+  );
 
   useEffect(() => {
     hydrateFromStorage();

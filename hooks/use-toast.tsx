@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import * as React from 'react';
 
@@ -28,7 +28,9 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
   const timeoutsRef = React.useRef<Record<string, number>>({});
 
   const remove = React.useCallback((id: string) => {
-    setToasts((prev: ToastItem[]) => prev.filter((t: ToastItem) => t.id !== id));
+    setToasts((prev: ToastItem[]) =>
+      prev.filter((t: ToastItem) => t.id !== id),
+    );
     const t = timeoutsRef.current[id];
     if (t) {
       window.clearTimeout(t);
@@ -36,22 +38,31 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
     }
   }, []);
 
-  const add = React.useCallback((type: ToastType, message: string, duration = 3000) => {
-    const id = Math.random().toString(36).slice(2);
-    const item: ToastItem = { id, type, message, duration };
-    setToasts((prev: ToastItem[]) => [...prev, item]);
-    timeoutsRef.current[id] = window.setTimeout(() => remove(id), duration);
-  }, [remove]);
-
-  const value = React.useMemo<ToastContextValue>(() => ({
-    toasts,
-    remove,
-    toast: {
-      success: (message: string, duration?: number) => add('success', message, duration),
-      error: (message: string, duration?: number) => add('error', message, duration),
-      info: (message: string, duration?: number) => add('info', message, duration),
+  const add = React.useCallback(
+    (type: ToastType, message: string, duration = 3000) => {
+      const id = Math.random().toString(36).slice(2);
+      const item: ToastItem = { id, type, message, duration };
+      setToasts((prev: ToastItem[]) => [...prev, item]);
+      timeoutsRef.current[id] = window.setTimeout(() => remove(id), duration);
     },
-  }), [add, remove, toasts]);
+    [remove],
+  );
+
+  const value = React.useMemo<ToastContextValue>(
+    () => ({
+      toasts,
+      remove,
+      toast: {
+        success: (message: string, duration?: number) =>
+          add('success', message, duration),
+        error: (message: string, duration?: number) =>
+          add('error', message, duration),
+        info: (message: string, duration?: number) =>
+          add('info', message, duration),
+      },
+    }),
+    [add, remove, toasts],
+  );
 
   return (
     <ToastContext.Provider value={value}>{children}</ToastContext.Provider>
